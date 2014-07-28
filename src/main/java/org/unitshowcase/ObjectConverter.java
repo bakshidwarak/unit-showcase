@@ -46,7 +46,7 @@ public class ObjectConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         
-        if(value instanceof Unit)
+        if(value instanceof ShowcaseUnit)
         {
            for(String key : converter.getUnitsList().keySet())
            {

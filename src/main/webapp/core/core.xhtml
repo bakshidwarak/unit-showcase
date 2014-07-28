@@ -18,11 +18,12 @@
                     currency are
 
                 </div>
-                <div class="col-md-12">
-                    <div class="col-md-4">
+                <h:form class="form-horizontal" role="form" >
+                    <div class="col-md-12">
+                        <div class="col-md-4">
 
-                        <div class="row">
-                            <h:form class="form-horizontal" role="form" >
+                            <div class="row">
+
                                 <fieldset>
 
                                     <!-- Form Name -->
@@ -40,12 +41,12 @@
 
                                             <h:selectOneMenu id="fromUnit" value="#{lengthConverter.fromUnit}" converter="#{objectConverter}" >
                                                 <f:selectItems value="#{lengthConverter.unitsList}" />
-                                                <f:ajax event="change" render="outtxt fromUnit intxt toUnit" execute="@form"    />
+                                                <f:ajax event="change" render="outtxt fromUnit intxt toUnit outPutDesc outputCode" execute="@form"    />
 
                                             </h:selectOneMenu>
                                             <h:selectOneMenu id="toUnit" value="#{lengthConverter.toUnit}"  converter="#{objectConverter}">
                                                 <f:selectItems value="#{lengthConverter.unitsList}" />
-                                                <f:ajax event="change" render="outtxt fromUnit intxt toUnit" execute="@form"    />
+                                                <f:ajax event="change" render="outtxt fromUnit intxt toUnit outPutDesc outputCode" execute="@form"    />
                                             </h:selectOneMenu>
                                             <br/><br/><br/>
 
@@ -58,31 +59,32 @@
 
                                     </div>
                                 </fieldset>
-                            </h:form>
-                        </div><!-- /.row -->
 
-                    </div>
-                    <div class="col-md-8">
-                        <fieldset>
+                            </div><!-- /.row -->
 
-                            <!-- Form Name -->
-                            <legend>Explaination</legend>
-                            <span>
-                                Property of a phenomenon, body, or substance, where the property has a magnitude that can be expressed as a number and a unit (adapted from VIM). Mass, time, distance, heat, and angular separation are among the familiar examples of quantitative properties.
-                                Kind of quantity, represented by sub-types, are aspect common to mutually comparable quantities. These libraries provide simple ways to convert one unit to another.
-                                <pre class="prettyprint">
+                        </div>
+                        <div class="col-md-8">
+                            <fieldset>
+
+                                <!-- Form Name -->
+                                <legend>Explaination</legend>
+
+                                <span>
+                                    <h:outputText id="outPutDesc" value="#{lengthConverter.description}">
+
+                                    </h:outputText>
+                                    <pre class="prettyprint">
+                                     <h:outputLabel id="outputCode" value=" #{lengthConverter.codeSnippet}" />
+                       
                                 
-            AbstractQuantity&lt;Length&gt; l = AbstractQuantity.of(inputVal, US.METER);         
-            l = AbstractQuantity.of(inputVal, US.FOOT);        
-            l = l.to(toUnit, MathContext.DECIMAL32);
-                                
-                                </pre>
+                                    </pre>
 
-                            </span>
-                        </fieldset>
+                                </span>
+                            </fieldset>
 
+                        </div>
                     </div>
-                </div>
+                </h:form>
                 <hr/>
             </div>
         </div>

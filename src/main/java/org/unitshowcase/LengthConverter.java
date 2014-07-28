@@ -21,14 +21,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.inject.Named;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.measure.quantity.Mass;
 import org.unitsofmeasurement.impl.AbstractQuantity;
-import org.unitsofmeasurement.impl.util.SI;
 import org.unitsofmeasurement.impl.util.US;
 
 /**
@@ -39,30 +34,35 @@ import org.unitsofmeasurement.impl.util.US;
 @SessionScoped
 public class LengthConverter {
 
-    private Unit fromUnit;
-    private Unit toUnit;
+    private ShowcaseUnit fromUnit;
+    private ShowcaseUnit toUnit;
     private String fromValue;
     private String toValue;
+    private String description=DescriptionConstants.defaultDescription;
+
+   
+    private String codeSnippet=CodeFragmentConstants.defaultCodeFragment;
     
 
     public LengthConverter() {
 
     }
-    private Map<String, Unit> unitsList = new HashMap<>();
+    private Map<String, ShowcaseUnit> unitsList = new HashMap<>();
 
     @PostConstruct
     public void init() {
         
         
 
-        unitsList.put("FOOT", US.FOOT);
-        unitsList.put("FOOT_SURVEY", US.FOOT_SURVEY);
-        unitsList.put("INCH", US.INCH);
-        unitsList.put("LIGHT_YEAR", US.LIGHT_YEAR);
-        unitsList.put("METER", US.METER);
-        unitsList.put("MILE", US.MILE);
-        unitsList.put("NAUTICAL_MILE", US.NAUTICAL_MILE);
-        unitsList.put("YARD", US.YARD);
+        unitsList.put("FOOT", new ShowcaseUnit(US.FOOT,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("FOOT_SURVEY", new ShowcaseUnit(US.FOOT_SURVEY,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("INCH", new ShowcaseUnit(US.INCH,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("LIGHT_YEAR", new ShowcaseUnit(US.LIGHT_YEAR,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("METER", new ShowcaseUnit(US.METER,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("MILE", new ShowcaseUnit(US.MILE,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("NAUTICAL_MILE", new ShowcaseUnit(US.NAUTICAL_MILE,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("YARD", new ShowcaseUnit(US.YARD,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("KILO METER", new ShowcaseUnit(IndianSystemOfUnits.KILOMETRE,DescriptionConstants.transformedUnitDescription,CodeFragmentConstants.transformedCodeFragment));
 
     }
 
@@ -76,27 +76,27 @@ public class LengthConverter {
     }
     
 
-    public Unit getToUnit() {
+    public ShowcaseUnit getToUnit() {
         return toUnit;
     }
 
-    public void setToUnit(Unit toUnit) {
+    public void setToUnit(ShowcaseUnit toUnit) {
         this.toUnit = toUnit;
     }
 
-    public Unit getFromUnit() {
+    public ShowcaseUnit getFromUnit() {
         return fromUnit;
     }
 
-    public void setFromUnit(Unit fromUnit) {
+    public void setFromUnit(ShowcaseUnit fromUnit) {
         this.fromUnit = fromUnit;
     }
 
-    public Map<String, Unit> getUnitsList() {
+    public Map<String,ShowcaseUnit> getUnitsList() {
         return unitsList;
     }
 
-    public void setUnitsList(Map<String, Unit> unitsList) {
+    public void setUnitsList(Map<String, ShowcaseUnit> unitsList) {
         this.unitsList = unitsList;
     }
 
@@ -106,6 +106,21 @@ public class LengthConverter {
 
     public void setFromValue(String fromValue) {
         this.fromValue = fromValue;
+    }
+     public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String desccription) {
+        this.description = desccription;
+    }
+
+    public String getCodeSnippet() {
+        return codeSnippet;
+    }
+
+    public void setCodeSnippet(String codeSnippet) {
+        this.codeSnippet = codeSnippet;
     }
 
     public void getConvertedValue() {
@@ -122,8 +137,10 @@ public class LengthConverter {
                 return;
             }
 
-            AbstractQuantity<Length> l = AbstractQuantity.of(inputVal, fromUnit);
-            l = l.to(toUnit, MathContext.DECIMAL32);
+            AbstractQuantity<Length> l = AbstractQuantity.of(inputVal, fromUnit.getUnit());
+            l = l.to(toUnit.getUnit(), MathContext.DECIMAL32);
+            this.description=toUnit.getDescription();
+            this.codeSnippet=toUnit.getCodeFragment();
 
             this.toValue = l.toString();
 
