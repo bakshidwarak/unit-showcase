@@ -33,8 +33,8 @@ import javax.measure.Unit;
 @RequestScoped
 public class ObjectConverter implements Converter {
     
-    @ManagedProperty(value="#{lengthConverter}")
-    public LengthConverter converter;
+    @ManagedProperty(value="#{anyUnitConverter}")
+    public AnyUnitConverter converter;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -57,11 +57,11 @@ public class ObjectConverter implements Converter {
         return "";
     }
 
-    public LengthConverter getConverter() {
+    public AnyUnitConverter getConverter() {
         return converter;
     }
 
-    public void setConverter(LengthConverter converter) {
+    public void setConverter(AnyUnitConverter converter) {
         this.converter = converter;
     }
     

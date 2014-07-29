@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.unitshowcase;
 
 /**
@@ -21,16 +20,20 @@ package org.unitshowcase;
  * @author dwbs
  */
 public class CodeFragmentConstants {
-    
-    public static final String defaultCodeFragment="\n"+
-"            AbstractQuantity<Length> l = AbstractQuantity.of(inputVal, US.METER);         \n" +
-"            l = AbstractQuantity.of(inputVal, US.FOOT);        \n" +
-"            l = l.to(toUnit, MathContext.DECIMAL32);";
-    
-    public static final String transformedCodeFragment="\n"+
-"            AbstractQuantity<Length> l = AbstractQuantity.of(inputVal, US.METER);         \n" +
-"            l = AbstractQuantity.of(inputVal, US.KILOMETER);        \n" +
-"            l = l.to(toUnit, MathContext.DECIMAL32);\n\n"
-            + "            TransformedUnit<Length> KILOMETRE\n" +
-"            = new TransformedUnit<Length>(SI.METRE,SIPrefix.KILO.getConverter());";
+
+    public static final String defaultCodeFragment = "\n"
+            + "            AbstractQuantity<Length> l = AbstractQuantity.of(inputVal, US.METER);         \n"
+            + "            l = AbstractQuantity.of(inputVal, US.FOOT);        \n"
+            + "            l = l.to(toUnit, MathContext.DECIMAL32);";
+
+    public static final String transformedCodeFragment = "\n"
+            + "            AbstractQuantity<Length> l = AbstractQuantity.of(inputVal, US.METER);         \n"
+            + "            l = AbstractQuantity.of(inputVal, US.KILOMETER);        \n"
+            + "            l = l.to(toUnit, MathContext.DECIMAL32);\n\n"
+            + "            TransformedUnit<Length> KILOMETRE\n"
+            + "            = new TransformedUnit<Length>(SI.METRE,SIPrefix.KILO.getConverter());";
+    static String dimensionCodeExample = "\n"
+            + "            BaseUnit<LuminousIntensity> CANDELA \n"
+            + "            = new BaseUnit<LuminousIntensity>(\"cd\", QuantityDimension.LUMINOUS_INTENSITY\")\n;"
+            + "            public static final Dimension LUMINOUS_INTENSITY = new QuantityDimension('J');";
 }

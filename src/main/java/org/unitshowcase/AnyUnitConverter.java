@@ -21,9 +21,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.unitsofmeasurement.impl.AbstractQuantity;
+import org.unitsofmeasurement.impl.util.SI;
 import org.unitsofmeasurement.impl.util.US;
 
 /**
@@ -32,37 +32,35 @@ import org.unitsofmeasurement.impl.util.US;
  */
 @ManagedBean
 @SessionScoped
-public class LengthConverter {
+public class AnyUnitConverter {
 
     private ShowcaseUnit fromUnit;
     private ShowcaseUnit toUnit;
     private String fromValue;
     private String toValue;
-    private String description=DescriptionConstants.defaultDescription;
+    private String description = DescriptionConstants.defaultDescription;
 
-   
-    private String codeSnippet=CodeFragmentConstants.defaultCodeFragment;
-    
+    private String codeSnippet = CodeFragmentConstants.defaultCodeFragment;
 
-    public LengthConverter() {
+    public AnyUnitConverter() {
 
     }
     private Map<String, ShowcaseUnit> unitsList = new HashMap<>();
 
     @PostConstruct
     public void init() {
-        
-        
 
-        unitsList.put("FOOT", new ShowcaseUnit(US.FOOT,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
-        unitsList.put("FOOT_SURVEY", new ShowcaseUnit(US.FOOT_SURVEY,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
-        unitsList.put("INCH", new ShowcaseUnit(US.INCH,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
-        unitsList.put("LIGHT_YEAR", new ShowcaseUnit(US.LIGHT_YEAR,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
-        unitsList.put("METER", new ShowcaseUnit(US.METER,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
-        unitsList.put("MILE", new ShowcaseUnit(US.MILE,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
-        unitsList.put("NAUTICAL_MILE", new ShowcaseUnit(US.NAUTICAL_MILE,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
-        unitsList.put("YARD", new ShowcaseUnit(US.YARD,DescriptionConstants.defaultDescription,CodeFragmentConstants.defaultCodeFragment));
-        unitsList.put("KILO METER", new ShowcaseUnit(IndianSystemOfUnits.KILOMETRE,DescriptionConstants.transformedUnitDescription,CodeFragmentConstants.transformedCodeFragment));
+        unitsList.put("FOOT", new ShowcaseUnit(US.FOOT, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("FOOT_SURVEY", new ShowcaseUnit(US.FOOT_SURVEY, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("INCH", new ShowcaseUnit(US.INCH, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("LIGHT_YEAR", new ShowcaseUnit(US.LIGHT_YEAR, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("METER", new ShowcaseUnit(US.METER, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("MILE", new ShowcaseUnit(US.MILE, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("NAUTICAL_MILE", new ShowcaseUnit(US.NAUTICAL_MILE, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("YARD", new ShowcaseUnit(US.YARD, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("KILO METER", new ShowcaseUnit(IndianSystemOfUnits.KILOMETRE, DescriptionConstants.transformedUnitDescription, CodeFragmentConstants.transformedCodeFragment));
+        unitsList.put("KILO GRAM", new ShowcaseUnit(SI.KILOGRAM, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
+        unitsList.put("POUND", new ShowcaseUnit(US.POUND, DescriptionConstants.defaultDescription, CodeFragmentConstants.defaultCodeFragment));
 
     }
 
@@ -74,7 +72,6 @@ public class LengthConverter {
     public void setToValue(String toValue) {
         this.toValue = toValue;
     }
-    
 
     public ShowcaseUnit getToUnit() {
         return toUnit;
@@ -92,7 +89,7 @@ public class LengthConverter {
         this.fromUnit = fromUnit;
     }
 
-    public Map<String,ShowcaseUnit> getUnitsList() {
+    public Map<String, ShowcaseUnit> getUnitsList() {
         return unitsList;
     }
 
@@ -107,7 +104,8 @@ public class LengthConverter {
     public void setFromValue(String fromValue) {
         this.fromValue = fromValue;
     }
-     public String getDescription() {
+
+    public String getDescription() {
         return description;
     }
 
@@ -116,7 +114,7 @@ public class LengthConverter {
     }
 
     public String getCodeSnippet() {
-        return codeSnippet;
+        return "<pre class=\"prettyprint\">" + codeSnippet + "</pre> prettyPrint()";
     }
 
     public void setCodeSnippet(String codeSnippet) {
@@ -127,10 +125,17 @@ public class LengthConverter {
 
         {
 
-            if (fromValue == null || fromValue.isEmpty() || fromUnit == null) {
+            if (fromValue == null || fromValue.isEmpty() || fromUnit == null || toUnit == null) {
                 return;
             }
             double inputVal = 0.0d;
+            if (!fromUnit.getUnit().getDimension().equals(toUnit.getUnit().getDimension())) {
+                this.description = DescriptionConstants.dimensionDescription;
+                this.codeSnippet = CodeFragmentConstants.dimensionCodeExample;
+                this.toValue = "Converting incompatible units";
+                return;
+
+            }
             try {
                 inputVal = Double.parseDouble(fromValue);
             } catch (NumberFormatException ne) {
@@ -139,8 +144,8 @@ public class LengthConverter {
 
             AbstractQuantity<Length> l = AbstractQuantity.of(inputVal, fromUnit.getUnit());
             l = l.to(toUnit.getUnit(), MathContext.DECIMAL32);
-            this.description=toUnit.getDescription();
-            this.codeSnippet=toUnit.getCodeFragment();
+            this.description = toUnit.getDescription();
+            this.codeSnippet = toUnit.getCodeFragment();
 
             this.toValue = l.toString();
 

@@ -5,7 +5,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core" 
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:define name="title">Length Converter</ui:define>
+    <ui:define name="title">Any Unit Converter</ui:define>
 
     <ui:define name="content">
 
@@ -34,24 +34,24 @@
                                     <div class="form-group">
 
                                         <div class="col-sm-10">
-                                            <h:inputText  id="intxt"  class="form-control" value="#{lengthConverter.fromValue}"  >
+                                            <h:inputText  id="intxt"  class="form-control" value="#{anyUnitConverter.fromValue}"  >
                                                 <f:ajax event="keyup" render="outtxt fromUnit intxt toUnit" execute="@form"    />
                                             </h:inputText>
 
 
-                                            <h:selectOneMenu id="fromUnit" value="#{lengthConverter.fromUnit}" converter="#{objectConverter}" >
-                                                <f:selectItems value="#{lengthConverter.unitsList}" />
+                                            <h:selectOneMenu id="fromUnit" value="#{anyUnitConverter.fromUnit}" converter="#{objectConverter}" >
+                                                <f:selectItems value="#{anyUnitConverter.unitsList}" />
                                                 <f:ajax event="change" render="outtxt fromUnit intxt toUnit outPutDesc outputCode" execute="@form"    />
 
                                             </h:selectOneMenu>
-                                            <h:selectOneMenu id="toUnit" value="#{lengthConverter.toUnit}"  converter="#{objectConverter}">
-                                                <f:selectItems value="#{lengthConverter.unitsList}" />
+                                            <h:selectOneMenu id="toUnit" value="#{anyUnitConverter.toUnit}"  converter="#{objectConverter}">
+                                                <f:selectItems value="#{anyUnitConverter.unitsList}" />
                                                 <f:ajax event="change" render="outtxt fromUnit intxt toUnit outPutDesc outputCode" execute="@form"    />
                                             </h:selectOneMenu>
                                             <br/><br/><br/>
 
 
-                                            <h:outputLabel  id="outtxt"  class="col-sm-6 control-label font-size:16px" value="#{lengthConverter.toValue}" />
+                                            <h:outputLabel  id="outtxt"  class="col-sm-6 control-label font-size:16px" value="#{anyUnitConverter.toValue}" />
                                         </div>
 
 
@@ -67,17 +67,17 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <legend>Explaination</legend>
+                                <legend>Explanation</legend>
 
                                 <span>
-                                    <h:outputText id="outPutDesc" value="#{lengthConverter.description}">
+                                    <h:outputText id="outPutDesc" value="#{anyUnitConverter.description}" >
 
                                     </h:outputText>
-                                    <pre class="prettyprint">
-                                     <h:outputLabel id="outputCode" value=" #{lengthConverter.codeSnippet}" />
+                                    
+                                    <h:outputText id="outputCode" value=" #{anyUnitConverter.codeSnippet}" escape="false"      />
                        
                                 
-                                    </pre>
+                                    
 
                                 </span>
                             </fieldset>
